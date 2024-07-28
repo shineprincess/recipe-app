@@ -1,0 +1,52 @@
+public class ReceipeWebService {
+    
+    private static final String SPOONACULAR_API = 'https://api.spoonacular.com';
+    private static final String API_KEY ='a9371f319d164425b0247ccabe7bfdcf';
+    
+    @AuraEnabled(cacheable = true)
+    public static String getRandomreceipe() {
+        Http http = new Http();
+        HttpRequest request = new HttpRequest();
+        request.setEndpoint(SPOONACULAR_API + '/recipes/random?apiKey=' + API_KEY);
+        request.setMethod('GET');
+    
+        try {
+            HttpResponse response = http.send(request);
+            System.debug('Response status: ' + response.getStatusCode());
+            System.debug('Response body: ' + response.getBody());
+            
+            if (response.getStatusCode() == 200) {
+                return response.getBody();
+            } else {
+                throw new CalloutException('Error from Spoonacular API: ' + response.getStatus());
+            }
+        } catch (Exception e) {
+            System.debug('HTTP Request failed: ' + e.getMessage());
+            throw new CalloutException('Failed to fetch random recipe. Please try again.');
+        }
+    }
+
+    //https://api.spoonacular.com/recipes/findByIngredients
+   // https://api.spoonacular.com/recipes/findByIngredients?ingredients=apples,+flour,+sugar&number=2
+    
+     @AuraEnabled(cacheable= true)
+     public static String getReceipeByIngredient(String ingredients){
+        String key = '%' + ingredients + '%';
+         String data = '';
+        Http http = new Http();
+        HttpRequest request = new HttpRequest();
+        request.setEndpoint(SPOONACULAR_API+ '/recipes/findByIngredients?apiKey='+ API_KEY+'&ingredients='+key);
+        request.setMethod('GET');
+        
+        HttpResponse response = http.send(request);
+        //System.debug('response ' + response.getBody());
+        if(response.getStatusCode() == 200){
+            System.debug('Response of Ingredient'+ response.getBody());
+           // Map<String,Object> results = (Map<String,Object>)JSON.deserializeUntyped(response.getBody());
+            return response.getBody();
+            
+        }
+        return '';
+        
+    }
+}
