@@ -1,0 +1,56 @@
+<template>
+    <lightning-card title="Recipe App" icon-name="utility:food_and_drink">
+        <div class="slds-var-m-around_medium">
+            <lightning-layout horizontal-align="space" class="slds-var-m-bottom_small">
+                <lightning-layout-item size="8">
+                    <lightning-input
+                        type="search"
+                        onchange={handleReceipeValueChange} 
+                        label="Search Recipe by ingredient"
+                        value={searchReceipe}
+                        class="ingredient-input"
+                    ></lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="4" padding="horizontal-medium">
+                    <lightning-layout horizontal-align="start">
+                        <lightning-layout-item size="4" padding="horizontal-medium">
+                            <lightning-button
+                                label="Search"
+                                onclick={handleReceipeByIngredientSearch} 
+                            ></lightning-button>
+                        </lightning-layout-item>
+
+                        <lightning-layout-item>
+                            <lightning-button
+                                label="Get Random Recipe"
+                                onclick={fetchRandomReceipe} 
+                            ></lightning-button>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </lightning-layout-item>
+            </lightning-layout>
+
+            <template lwc:if={receipesByIngredients}> 
+                <div class="receipe-grid">
+                    <template for:each={receipesByIngredients} for:item="recipe">
+                        <div key={recipe.id} class="receipe-card">
+                            <img src={recipe.image} alt="Recipe Image" class="recipe-image"/>
+                            <div class="recipe-details">
+                                <h2 class="recipe-title">{recipe.title}</h2>
+                                <p>{recipe.summary}</p>
+                                <p>Ready in: {recipe.readyInMinutes} minutes</p>
+                                <p>Price: ₹{recipe.pricePerServing}</p>
+                                <lightning-button label="Order Now" class="order-button"></lightning-button>
+                            </div>
+                        </div>
+                    </template>             
+                </div>
+            </template>
+            
+            <template lwc:elseif={error}>
+                <p>Please input correct data</p>
+            </template>
+        </div>
+    </lightning-card>
+</template>

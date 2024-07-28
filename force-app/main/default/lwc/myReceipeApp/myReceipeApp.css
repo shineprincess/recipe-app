@@ -1,0 +1,33 @@
+.receipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+}
+
+.receipe-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+.recipe-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.recipe-details {
+    padding: 16px;
+}
+
+.recipe-title {
+    font-size: 1.25rem;
+    margin-bottom: 8px;
+}
+
+.order-button {
+    margin-top: 12px;
+    width: 100%;
+}
